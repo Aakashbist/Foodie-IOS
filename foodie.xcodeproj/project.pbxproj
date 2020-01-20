@@ -3,32 +3,52 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		774641A423C465A400D5E61D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 774641A323C465A400D5E61D /* AppDelegate.m */; };
-		774641A723C465A400D5E61D /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 774641A623C465A400D5E61D /* SceneDelegate.m */; };
-		774641AA23C465A400D5E61D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774641A923C465A400D5E61D /* ViewController.m */; };
 		774641AD23C465A400D5E61D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774641AB23C465A400D5E61D /* Main.storyboard */; };
 		774641AF23C465A500D5E61D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 774641AE23C465A500D5E61D /* Assets.xcassets */; };
 		774641B223C465A500D5E61D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774641B023C465A500D5E61D /* LaunchScreen.storyboard */; };
 		774641B523C465A500D5E61D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 774641B423C465A500D5E61D /* main.m */; };
+		774641C323C4870700D5E61D /* RecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774641C223C4870700D5E61D /* RecipeViewController.m */; };
+		776EB8DC23C49E950043CB5E /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776EB8DB23C49E950043CB5E /* DetailViewController.m */; };
+		776EB8ED23C6CAD60043CB5E /* Recipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 776EB8EC23C6CAD60043CB5E /* Recipe.m */; };
+		77912BC623D538A600A60632 /* AddRecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77912BC523D538A600A60632 /* AddRecipeViewController.m */; };
+		77912BC923D53BD400A60632 /* Ingredients.m in Sources */ = {isa = PBXBuildFile; fileRef = 77912BC823D53BD400A60632 /* Ingredients.m */; };
+		779D720C23CC66A6006FDBD1 /* ShoppingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779D720B23CC66A6006FDBD1 /* ShoppingViewController.m */; };
+		779D720F23CC66EC006FDBD1 /* FavouriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779D720E23CC66EC006FDBD1 /* FavouriteViewController.m */; };
+		779D721723CD3B87006FDBD1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 779D721623CD3B87006FDBD1 /* GoogleService-Info.plist */; };
+		988B880A93BB4D418298FB69 /* Pods_foodie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5477007491A1235CB12ECCF9 /* Pods_foodie.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26BE9CF6F7D08C6404FCD799 /* Pods-foodie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodie.release.xcconfig"; path = "Target Support Files/Pods-foodie/Pods-foodie.release.xcconfig"; sourceTree = "<group>"; };
+		5477007491A1235CB12ECCF9 /* Pods_foodie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_foodie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7145971D8CA21E1514B53F92 /* Pods-foodie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodie.debug.xcconfig"; path = "Target Support Files/Pods-foodie/Pods-foodie.debug.xcconfig"; sourceTree = "<group>"; };
 		7746419F23C465A400D5E61D /* foodie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foodie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		774641A223C465A400D5E61D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		774641A323C465A400D5E61D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		774641A523C465A400D5E61D /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		774641A623C465A400D5E61D /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		774641A823C465A400D5E61D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		774641A923C465A400D5E61D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		774641AC23C465A400D5E61D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		774641AE23C465A500D5E61D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		774641B123C465A500D5E61D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		774641B323C465A500D5E61D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		774641B423C465A500D5E61D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		774641C123C4870700D5E61D /* RecipeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RecipeViewController.h; path = ../RecipeViewController.h; sourceTree = "<group>"; };
+		774641C223C4870700D5E61D /* RecipeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RecipeViewController.m; path = ../RecipeViewController.m; sourceTree = "<group>"; };
+		776EB8DA23C49E950043CB5E /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ../DetailViewController.h; sourceTree = "<group>"; };
+		776EB8DB23C49E950043CB5E /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ../DetailViewController.m; sourceTree = "<group>"; };
+		776EB8EB23C6CAD60043CB5E /* Recipe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Recipe.h; sourceTree = "<group>"; };
+		776EB8EC23C6CAD60043CB5E /* Recipe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Recipe.m; sourceTree = "<group>"; };
+		77912BC423D538A600A60632 /* AddRecipeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddRecipeViewController.h; sourceTree = "<group>"; };
+		77912BC523D538A600A60632 /* AddRecipeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddRecipeViewController.m; sourceTree = "<group>"; };
+		77912BC723D53BD400A60632 /* Ingredients.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ingredients.h; sourceTree = "<group>"; };
+		77912BC823D53BD400A60632 /* Ingredients.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Ingredients.m; sourceTree = "<group>"; };
+		779D720A23CC66A6006FDBD1 /* ShoppingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingViewController.h; sourceTree = "<group>"; };
+		779D720B23CC66A6006FDBD1 /* ShoppingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoppingViewController.m; sourceTree = "<group>"; };
+		779D720D23CC66EC006FDBD1 /* FavouriteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavouriteViewController.h; sourceTree = "<group>"; };
+		779D720E23CC66EC006FDBD1 /* FavouriteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FavouriteViewController.m; sourceTree = "<group>"; };
+		779D721623CD3B87006FDBD1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,17 +56,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				988B880A93BB4D418298FB69 /* Pods_foodie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18A152B54D18732C2506C770 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5477007491A1235CB12ECCF9 /* Pods_foodie.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7746419623C465A400D5E61D = {
 			isa = PBXGroup;
 			children = (
 				774641A123C465A400D5E61D /* foodie */,
 				774641A023C465A400D5E61D /* Products */,
+				992681C1ABB288E075B426EE /* Pods */,
+				18A152B54D18732C2506C770 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,19 +92,54 @@
 		774641A123C465A400D5E61D /* foodie */ = {
 			isa = PBXGroup;
 			children = (
+				779D721623CD3B87006FDBD1 /* GoogleService-Info.plist */,
+				779D721023CC6731006FDBD1 /* Model */,
+				779D720223CC657F006FDBD1 /* Controller */,
 				774641A223C465A400D5E61D /* AppDelegate.h */,
 				774641A323C465A400D5E61D /* AppDelegate.m */,
-				774641A523C465A400D5E61D /* SceneDelegate.h */,
-				774641A623C465A400D5E61D /* SceneDelegate.m */,
-				774641A823C465A400D5E61D /* ViewController.h */,
-				774641A923C465A400D5E61D /* ViewController.m */,
 				774641AB23C465A400D5E61D /* Main.storyboard */,
 				774641AE23C465A500D5E61D /* Assets.xcassets */,
 				774641B023C465A500D5E61D /* LaunchScreen.storyboard */,
-				774641B323C465A500D5E61D /* Info.plist */,
 				774641B423C465A500D5E61D /* main.m */,
 			);
 			path = foodie;
+			sourceTree = "<group>";
+		};
+		779D720223CC657F006FDBD1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				774641C123C4870700D5E61D /* RecipeViewController.h */,
+				774641C223C4870700D5E61D /* RecipeViewController.m */,
+				776EB8DA23C49E950043CB5E /* DetailViewController.h */,
+				776EB8DB23C49E950043CB5E /* DetailViewController.m */,
+				779D720A23CC66A6006FDBD1 /* ShoppingViewController.h */,
+				779D720B23CC66A6006FDBD1 /* ShoppingViewController.m */,
+				779D720D23CC66EC006FDBD1 /* FavouriteViewController.h */,
+				779D720E23CC66EC006FDBD1 /* FavouriteViewController.m */,
+				77912BC423D538A600A60632 /* AddRecipeViewController.h */,
+				77912BC523D538A600A60632 /* AddRecipeViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		779D721023CC6731006FDBD1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				776EB8EC23C6CAD60043CB5E /* Recipe.m */,
+				776EB8EB23C6CAD60043CB5E /* Recipe.h */,
+				77912BC723D53BD400A60632 /* Ingredients.h */,
+				77912BC823D53BD400A60632 /* Ingredients.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		992681C1ABB288E075B426EE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7145971D8CA21E1514B53F92 /* Pods-foodie.debug.xcconfig */,
+				26BE9CF6F7D08C6404FCD799 /* Pods-foodie.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,9 +149,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 774641B823C465A500D5E61D /* Build configuration list for PBXNativeTarget "foodie" */;
 			buildPhases = (
+				F2D35AED1152F7E9C7C294CC /* [CP] Check Pods Manifest.lock */,
 				7746419B23C465A400D5E61D /* Sources */,
 				7746419C23C465A400D5E61D /* Frameworks */,
 				7746419D23C465A400D5E61D /* Resources */,
+				D10CC0C608ACCB28EE39731F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				774641B223C465A500D5E61D /* LaunchScreen.storyboard in Resources */,
+				779D721723CD3B87006FDBD1 /* GoogleService-Info.plist in Resources */,
 				774641AF23C465A500D5E61D /* Assets.xcassets in Resources */,
 				774641AD23C465A400D5E61D /* Main.storyboard in Resources */,
 			);
@@ -141,15 +210,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D10CC0C608ACCB28EE39731F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-foodie/Pods-foodie-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-foodie/Pods-foodie-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-foodie/Pods-foodie-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F2D35AED1152F7E9C7C294CC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-foodie-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7746419B23C465A400D5E61D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				774641AA23C465A400D5E61D /* ViewController.m in Sources */,
 				774641A423C465A400D5E61D /* AppDelegate.m in Sources */,
+				776EB8ED23C6CAD60043CB5E /* Recipe.m in Sources */,
 				774641B523C465A500D5E61D /* main.m in Sources */,
-				774641A723C465A400D5E61D /* SceneDelegate.m in Sources */,
+				77912BC923D53BD400A60632 /* Ingredients.m in Sources */,
+				774641C323C4870700D5E61D /* RecipeViewController.m in Sources */,
+				77912BC623D538A600A60632 /* AddRecipeViewController.m in Sources */,
+				779D720F23CC66EC006FDBD1 /* FavouriteViewController.m in Sources */,
+				779D720C23CC66A6006FDBD1 /* ShoppingViewController.m in Sources */,
+				776EB8DC23C49E950043CB5E /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -277,7 +393,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -287,11 +403,13 @@
 		};
 		774641B923C465A500D5E61D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7145971D8CA21E1514B53F92 /* Pods-foodie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78XJ2XQD46;
 				INFOPLIST_FILE = foodie/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,11 +422,13 @@
 		};
 		774641BA23C465A500D5E61D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26BE9CF6F7D08C6404FCD799 /* Pods-foodie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78XJ2XQD46;
 				INFOPLIST_FILE = foodie/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

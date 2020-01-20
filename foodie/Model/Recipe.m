@@ -11,12 +11,6 @@
 
 @implementation Recipe
 
-@synthesize recipeTitle;
-@synthesize recipeUrl;
+@synthesize recipeTitle,recipeUrl,ingredient;
 
-
--(void)initWithRecipeTitle:(NSString *) recipeTitle recipeUrl:(NSString *) recipeUrl{
-    [self setRecipeTitle:recipeTitle];
-    [self setRecipeUrl:recipeUrl];
-}
 @end

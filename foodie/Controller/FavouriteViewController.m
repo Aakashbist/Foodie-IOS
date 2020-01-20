@@ -7,9 +7,10 @@
 //
 
 #import "FavouriteViewController.h"
+#import "Recipe.h"
 
 @interface FavouriteViewController ()
-
+@property(strong,nonatomic) NSMutableArray *favourites;
 @end
 
 @implementation FavouriteViewController
@@ -17,34 +18,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    [self setupFavouriteView];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+   
 }
-
+ -(void)setupFavouriteView
+{
+    self.favourites=NSMutableArray.new;
+    Recipe *recipe=Recipe.new;
+      [ recipe initWithRecipeTitle:@"Spaghetti" recipeUrl:@"spaghetti.jpeg"];
+       [self.favourites addObject:recipe];
+       
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+   return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return self.favourites.count ;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"favouriteRecioeCell" forIndexPath:indexPath];
+    Recipe *recipe=self.favourites[indexPath.row];
+    cell.textLabel.text=recipe.recipeTitle;
+    cell.imageView.image=[UIImage imageNamed:recipe.recipeUrl];
+     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

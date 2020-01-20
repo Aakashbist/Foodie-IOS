@@ -14,9 +14,24 @@
 
 @implementation DetailViewController
 
+
+#pragma mark - Managing the detail item
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.recipeTitle.text=self.currentRecipe.recipeTitle;
+    self.recipeImage.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentRecipe.recipeUrl]]];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the view, typically from a nib.
+  
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 /*
@@ -29,4 +44,9 @@
 }
 */
 
+- (IBAction)addToFavourites:(id)sender {
+}
+
+- (IBAction)addToShoppingList:(id)sender {
+}
 @end

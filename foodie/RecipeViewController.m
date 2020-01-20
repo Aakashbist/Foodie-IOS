@@ -7,45 +7,106 @@
 //
 
 #import "RecipeViewController.h"
+#import "DetailViewController.h"
+
 
 @interface RecipeViewController ()
+
+    -(UIImage *) resize:(UIImage *)image toSize:(CGSize)size;
+  
 
 @end
 
 @implementation RecipeViewController
 
+@synthesize recipes,ingredients;
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+     self.ref = [[FIRDatabase database] reference];
+    
     
     // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+   // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+      [self setRecipeView];
+}
+
+-(void)setRecipeView{
+        
+    FIRDatabaseQuery *myTopPostsQuery = [[self.ref child:@"Foodie/Recipes"] queryOrderedByKey];
+  self.recipes=NSMutableArray.new;
+    [myTopPostsQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        Recipe *recipe=Recipe.new;
+        NSLog(@"%@",snapshot.value);
+        [recipe setRecipeTitle:[snapshot.value objectForKey:@"title"]];
+        [recipe setRecipeUrl:[snapshot.value objectForKey:@"url"]];
+        [recipe setIngredient:[snapshot.value objectForKey:@"ingredient"]];
+       
+        [self.recipes addObject:recipe];
+        
+        [self.tableView reloadData];
+    }];
+}
+
+-(UIImage *) resize:(UIImage *)image toSize:(CGSize)size{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *resizesImage=UIGraphicsGetImageFromCurrentImageContext();
+    return resizesImage;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return self.recipes.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RecipeCell" forIndexPath:indexPath];
+   Recipe *recipe=self.recipes[indexPath.row];
+    cell.textLabel.text=recipe.recipeTitle;
+    cell.imageView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:recipe.recipeUrl]]];
+ 
     return cell;
 }
-*/
 
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    static NSString *identifier = @"Cell";
+//
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+//
+//    [[cell textLabel] setText:[NSString stringWithFormat:@"%@, %@ %@", [[data objectAtIndex:indexPath.row] dCompany], [[data objectAtIndex:indexPath.row] dName], [[data objectAtIndex:indexPath.row] dVersion]]];
+//
+//    return cell;
+//}
+
+
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showDetails"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        Recipe *choosenRecipe = [self.recipes objectAtIndex: indexPath.row];
+        DetailViewController *detailViewController=segue.destinationViewController;
+        detailViewController.currentRecipe=choosenRecipe;
+       }
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

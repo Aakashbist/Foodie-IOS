@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FavouriteViewController : UITableViewController
+@interface FavouriteViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
 @end
 

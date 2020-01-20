@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Ingredients.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *recipeTitle;
 @property (strong, nonatomic) NSString *recipeUrl;
-@property (strong, nonatomic) NSMutableArray *ingredients;
+@property (strong, nonatomic) NSString *ingredient;
 
 -(void)initWithRecipeTitle:(NSString *) recipeTitle recipeUrl:(NSString *) recipeUrl;
 

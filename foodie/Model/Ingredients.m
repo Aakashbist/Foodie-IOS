@@ -9,5 +9,5 @@
 #import "Ingredients.h"
 
 @implementation Ingredients
-
+@synthesize ingredient;
 @end
