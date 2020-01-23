@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Ingredients : NSObject
 
-@property(weak,nonatomic) NSString *ingredient;
+@property(weak,nonatomic) NSString *title;
 
 @end
 

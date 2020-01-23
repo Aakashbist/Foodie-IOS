@@ -1,10 +1,3 @@
-//
-//  AddRecipeViewController.m
-//  foodie
-//
-//  Created by Aakash Bista on 20/1/20.
-//  Copyright © 2020 Aakash Bista. All rights reserved.
-//
 
 #import "AddRecipeViewController.h"
 
@@ -14,7 +7,7 @@
 
 @implementation AddRecipeViewController
 
-@synthesize recipeTitle, ingredient,recipeImageView,listOfIngredients,path,storage,uploadProgressView;
+@synthesize recipeTitle, ingredient,recipeImageView,listOfIngredients,path,storage,uploadProgressView,addIngredientButton,saveRecipeButton;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -75,6 +68,8 @@
 }
 - (IBAction)saveRecipe:(id)sender {
     [self saveRecipeImage];
+    self.addIngredientButton.enabled=false;
+    self.saveRecipeButton.enabled=false;
 }
 
 -(void)addRecipeToFirebase:(NSString *) imageUrl{

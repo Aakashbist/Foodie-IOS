@@ -7,29 +7,59 @@
 //
 
 #import "FavouriteViewController.h"
-#import "Recipe.h"
 
 @interface FavouriteViewController ()
-@property(strong,nonatomic) NSMutableArray *favourites;
 @end
 
 @implementation FavouriteViewController
 
+@synthesize recipes;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self setupFavouriteView];
+        self.ref = [[FIRDatabase database] reference];
+       
     
    
 }
- -(void)setupFavouriteView
-{
-    self.favourites=NSMutableArray.new;
-    Recipe *recipe=Recipe.new;
-      [ recipe initWithRecipeTitle:@"Spaghetti" recipeUrl:@"spaghetti.jpeg"];
-       [self.favourites addObject:recipe];
-       
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+      [self loadFavourites];
 }
+
+-(void)loadFavourites{
+     self.recipes=NSMutableArray.new;
+    FIRDatabaseQuery *getFavouriteRecipesQuery = [[self.ref child:@"Foodie/Favourites"] queryOrderedByKey];
+     NSLog(@"%@",getFavouriteRecipesQuery);
+    [getFavouriteRecipesQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSEnumerator *children = [snapshot children];
+        FIRDataSnapshot *child;
+            while (child = [children nextObject]) {
+            NSString* key=child.value;
+                [self getListOfFavourite:key];
+            }
+    }];
+    
+}
+
+-(void)getListOfFavourite:(NSString *) key
+{
+   FIRDatabaseQuery *getRecipesQuery = [[[self.ref child:@"Foodie/Recipes/"] queryOrderedByKey] queryEqualToValue:key];
+          [getRecipesQuery observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+              Recipe *recipe=Recipe.new;
+              
+              [recipe setRecipeTitle:[[snapshot.value objectForKey:key] objectForKey:@"title"]];
+              [recipe setRecipeUrl:[[snapshot.value objectForKey:key]   objectForKey:@"url"]];
+              [recipe setIngredient:[[snapshot.value objectForKey:key]   objectForKey:@"ingredient"]];
+              [self.recipes addObject:recipe];
+              [self.tableView reloadData];
+          }];
+}
+
+
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -37,16 +67,20 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.favourites.count ;
+   // NSLog(@"%lu  ,from log",(unsigned long)self.recipes.count);
+    return self.recipes.count ;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"favouriteRecioeCell" forIndexPath:indexPath];
-    Recipe *recipe=self.favourites[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"favouriteRecipeCell" forIndexPath:indexPath];
+    Recipe *recipe=self.recipes[indexPath.row];
+    //NSLog(@"%@, %@",recipe.recipeTitle,recipe.recipeUrl);
     cell.textLabel.text=recipe.recipeTitle;
-    cell.imageView.image=[UIImage imageNamed:recipe.recipeUrl];
-     return cell;
+    cell.imageView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:recipe.recipeUrl]]];
+    return cell;
+   
+    
 }
 
 

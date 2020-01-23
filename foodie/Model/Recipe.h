@@ -13,11 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Recipe : NSObject
 
+@property (strong, nonatomic) NSString *recipeId;
 @property (strong, nonatomic) NSString *recipeTitle;
 @property (strong, nonatomic) NSString *recipeUrl;
 @property (strong, nonatomic) NSString *ingredient;
 
--(void)initWithRecipeTitle:(NSString *) recipeTitle recipeUrl:(NSString *) recipeUrl;
 
 @end
 

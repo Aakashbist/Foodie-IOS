@@ -26,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) IBOutlet NSURL *path;
 @property (weak, nonatomic) IBOutlet UIProgressView *uploadProgressView;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveRecipeButton;
+@property (weak, nonatomic) IBOutlet UIButton *addIngredientButton;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

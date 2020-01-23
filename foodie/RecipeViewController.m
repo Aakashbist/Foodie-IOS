@@ -29,7 +29,6 @@
     [super viewDidLoad];
      self.ref = [[FIRDatabase database] reference];
     
-    
     // Uncomment the following line to preserve selection between presentations.
    // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -38,22 +37,20 @@
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-      [self setRecipeView];
+      [self loadRecipes];
 }
 
--(void)setRecipeView{
-        
-    FIRDatabaseQuery *myTopPostsQuery = [[self.ref child:@"Foodie/Recipes"] queryOrderedByKey];
-  self.recipes=NSMutableArray.new;
-    [myTopPostsQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+-(void)loadRecipes{
+    FIRDatabaseQuery *getRecipesQuery = [[self.ref child:@"Foodie/Recipes"] queryOrderedByKey];
+    self.recipes=NSMutableArray.new;
+    [getRecipesQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         Recipe *recipe=Recipe.new;
-        NSLog(@"%@",snapshot.value);
+        [recipe setRecipeId:snapshot.key];
         [recipe setRecipeTitle:[snapshot.value objectForKey:@"title"]];
         [recipe setRecipeUrl:[snapshot.value objectForKey:@"url"]];
         [recipe setIngredient:[snapshot.value objectForKey:@"ingredient"]];
-       
         [self.recipes addObject:recipe];
-        
+   
         [self.tableView reloadData];
     }];
 }
@@ -79,21 +76,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RecipeCell" forIndexPath:indexPath];
    Recipe *recipe=self.recipes[indexPath.row];
+   //NSLog(@"%@, %@",recipe.recipeTitle,recipe.recipeUrl);
     cell.textLabel.text=recipe.recipeTitle;
     cell.imageView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:recipe.recipeUrl]]];
- 
     return cell;
 }
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    static NSString *identifier = @"Cell";
-//
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-//
-//    [[cell textLabel] setText:[NSString stringWithFormat:@"%@, %@ %@", [[data objectAtIndex:indexPath.row] dCompany], [[data objectAtIndex:indexPath.row] dName], [[data objectAtIndex:indexPath.row] dVersion]]];
-//
-//    return cell;
-//}
+
 
 
 
@@ -107,15 +96,15 @@
         detailViewController.currentRecipe=choosenRecipe;
        }
 }
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
@@ -125,7 +114,7 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
+
 
 /*
 // Override to support rearranging the table view.
