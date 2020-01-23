@@ -13,8 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ShoppingViewController : UITableViewController
 @property (strong, nonatomic) FIRDatabaseReference *ref;
-@property (strong, nonatomic) NSMutableArray<Ingredients *> *listOfIngredients;
-
+@property (strong, nonatomic) NSMutableArray *listOfIngredients;
+@property (strong, nonatomic) NSString *ingredientTitle;
 @end
-
 NS_ASSUME_NONNULL_END

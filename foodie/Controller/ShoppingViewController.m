@@ -14,12 +14,13 @@
 
 @implementation ShoppingViewController
 
-@synthesize listOfIngredients;
+@synthesize listOfIngredients,ingredientTitle;
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.ref = [[FIRDatabase database] reference];
+    self.ref = [[FIRDatabase database] reference];
+    self.listOfIngredients=NSMutableArray.new;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -29,68 +30,73 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-      [self loadIngredients];
-   
+    [self loadIngredients];
+    
 }
 
 -(void)loadIngredients{
-    self.listOfIngredients=NSMutableArray.new;
     FIRDatabaseQuery *getIngredientsListQuery = [[self.ref child:@"Foodie/Shopping"] queryOrderedByKey];
     [getIngredientsListQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-           NSLog(@"%@",snapshot.value);
-        NSLog(@"%lu",(unsigned long)[snapshot.value count]);
-        NSEnumerator *children = [snapshot children];
-        FIRDataSnapshot *child;
-            while (child = [children nextObject]) {
-              //  NSString* key=child.value;
-               //[self getListOfIngredients:key];
-            }
+        NSString* key=[snapshot.value objectForKey:@"ingredients"];
+        NSString* title=[snapshot.value objectForKey:@"recipeTitle"];
+        [self getListOfIngredientById:key : title];
     }];
-   
 }
 
--(void)getListOfIngredients :(NSString *) key {
-   
+
+
+//[
+//{ title: "" , ingl:["",""] }
+//
+//]
+
+
+-(void)getListOfIngredientById:(NSString *) key : (NSString *) title {
+    NSLog(@"key fom for method: %@", key);
     listOfIngredients=NSMutableArray.new;
-    Ingredients *ingredient=Ingredients.new;
     FIRDatabaseQuery *getIngredients = [[[self.ref child:@"Foodie/Ingredient/"] queryOrderedByKey] queryEqualToValue:key];
     [getIngredients observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-      // NSLog(@"%@",[snapshot.children nextObject]);
+        NSLog(@"%@",[snapshot.children nextObject]);
         NSArray* value  =[[snapshot.children nextObject] value];
-            for (int i=0; i<value.count; i++) {
-                [ingredient  setTitle:[[value objectAtIndex:i] objectForKey:@"title"]];
-                [self.listOfIngredients addObject:ingredient];
-                  NSLog(@" list of: %@",ingredient.title );
-                 [self.tableView reloadData];
-            }
-        }];
-    
-    
+        NSMutableArray* data= NSMutableArray.new;
+        for (int i=0; i<value.count; i++) {
+           self.ingredientTitle= [[value objectAtIndex:i] objectForKey:@"title"];
+            [data addObject:self.ingredientTitle];
+        }
+        NSDictionary *post = @{
+            @"title": title,
+            @"ingredient":data
+            
+        };
+        [self.listOfIngredients addObject:post];
+        [self.tableView reloadData];
+    }];
 }
 
 #pragma mark - Table view data source
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UILabel *label=  UILabel.new;
-    label.text=@"Header";
-    label.backgroundColor=UIColor.grayColor;
+    label.text=[[self.listOfIngredients objectAtIndex:section ] objectForKey:@"title"];
+    label.backgroundColor=UIColor.cyanColor;
     return label;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-   return 1;
+    return self.listOfIngredients.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-     return self.listOfIngredients.count;
+    return [[[self.listOfIngredients objectAtIndex:section ] objectForKey:@"ingredient"] count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"%ld,%ld<<<",(long)indexPath.section,(long)indexPath.row);
+    NSLog(@"%@ >>",[[self.listOfIngredients[indexPath.section] objectForKey:@"ingredient"] objectAtIndex:indexPath.row] );
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"shoppingListCell" forIndexPath:indexPath];
-    Ingredients *ingredient=self.listOfIngredients[indexPath.row];
-   cell.textLabel.text=ingredient.title;
-      return cell;
-   
+    cell.textLabel.text=[[self.listOfIngredients[indexPath.section] objectForKey:@"ingredient"] objectAtIndex:indexPath.row];
+    return cell;
+    
 }
 
 
@@ -110,32 +116,32 @@
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
 }
 
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
