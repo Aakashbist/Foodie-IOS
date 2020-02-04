@@ -7,6 +7,7 @@
 //
 
 #import "FavouriteViewController.h"
+#import "DetailViewController.h"
 
 @interface FavouriteViewController ()
 @end
@@ -31,7 +32,6 @@
 -(void)loadFavourites{
      self.recipes=NSMutableArray.new;
     FIRDatabaseQuery *getFavouriteRecipesQuery = [[self.ref child:@"Foodie/Favourites"] queryOrderedByKey];
-     NSLog(@"%@",getFavouriteRecipesQuery);
     [getFavouriteRecipesQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSEnumerator *children = [snapshot children];
         FIRDataSnapshot *child;
@@ -47,9 +47,7 @@
 {
    FIRDatabaseQuery *getRecipesQuery = [[[self.ref child:@"Foodie/Recipes/"] queryOrderedByKey] queryEqualToValue:key];
           [getRecipesQuery observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-              Recipe *recipe=Recipe.new;
-              
-              [recipe setRecipeTitle:[[snapshot.value objectForKey:key] objectForKey:@"title"]];
+              Recipe *recipe=Recipe.new;              [recipe setRecipeTitle:[[snapshot.value objectForKey:key] objectForKey:@"title"]];
               [recipe setRecipeUrl:[[snapshot.value objectForKey:key]   objectForKey:@"url"]];
               [recipe setIngredient:[[snapshot.value objectForKey:key]   objectForKey:@"ingredient"]];
               [self.recipes addObject:recipe];
@@ -75,7 +73,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"favouriteRecipeCell" forIndexPath:indexPath];
     Recipe *recipe=self.recipes[indexPath.row];
-    //NSLog(@"%@, %@",recipe.recipeTitle,recipe.recipeUrl);
     cell.textLabel.text=recipe.recipeTitle;
     cell.imageView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:recipe.recipeUrl]]];
     return cell;
@@ -118,14 +115,19 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+  if ([[segue identifier] isEqualToString:@"favouriteToDetailSeuge"]) {
+            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+            Recipe *choosenRecipe = [self.recipes objectAtIndex: indexPath.row];
+            DetailViewController *detailViewController=segue.destinationViewController;
+            detailViewController.currentRecipe=choosenRecipe;
+        }
+       
 }
-*/
+
 
 @end

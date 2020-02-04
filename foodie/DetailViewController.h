@@ -12,21 +12,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
 
 @property (strong, nonatomic) FIRDatabaseReference *ref;
 
 - (IBAction)addToFavourites:(id)sender;
 - (IBAction)addToShoppingList:(id)sender;
 
-@property (weak, nonatomic) IBOutlet NSString *recipeId;
-@property (weak, nonatomic) IBOutlet NSString *ingredientId;
+@property (weak, nonatomic)  NSString *recipeId;
+@property (weak, nonatomic)  NSString *ingredientId;
 @property (weak, nonatomic) IBOutlet UILabel *recipeTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *recipeImage;
-@property (weak, nonatomic) IBOutlet NSMutableArray *listOfIngredients;
-@property (strong, nonatomic) Recipe *currentRecipe;
 @property (strong, nonatomic) IBOutlet UIButton *addTofavouriteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addToShoppingList;
+@property (weak, nonatomic) IBOutlet UITableView *ingredientTableView;
+
+
+@property (strong, nonatomic) Recipe *currentRecipe;
+@property (strong, nonatomic) NSMutableArray *listOfIngredients;
+@property (strong, nonatomic) NSString *ingredientTitle;
+
 
 
 @end

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7719E46823D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7719E46723D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.m */; };
 		774641A423C465A400D5E61D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 774641A323C465A400D5E61D /* AppDelegate.m */; };
 		774641AD23C465A400D5E61D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774641AB23C465A400D5E61D /* Main.storyboard */; };
 		774641AF23C465A500D5E61D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 774641AE23C465A500D5E61D /* Assets.xcassets */; };
@@ -28,8 +27,6 @@
 		26BE9CF6F7D08C6404FCD799 /* Pods-foodie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodie.release.xcconfig"; path = "Target Support Files/Pods-foodie/Pods-foodie.release.xcconfig"; sourceTree = "<group>"; };
 		5477007491A1235CB12ECCF9 /* Pods_foodie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_foodie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7145971D8CA21E1514B53F92 /* Pods-foodie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodie.debug.xcconfig"; path = "Target Support Files/Pods-foodie/Pods-foodie.debug.xcconfig"; sourceTree = "<group>"; };
-		7719E46623D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = recipeDetailViewControllerTableViewController.h; sourceTree = "<group>"; };
-		7719E46723D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = recipeDetailViewControllerTableViewController.m; sourceTree = "<group>"; };
 		7746419F23C465A400D5E61D /* foodie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foodie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		774641A223C465A400D5E61D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		774641A323C465A400D5E61D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -121,8 +118,6 @@
 				779D720E23CC66EC006FDBD1 /* FavouriteViewController.m */,
 				77912BC423D538A600A60632 /* AddRecipeViewController.h */,
 				77912BC523D538A600A60632 /* AddRecipeViewController.m */,
-				7719E46623D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.h */,
-				7719E46723D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -265,7 +260,6 @@
 				774641A423C465A400D5E61D /* AppDelegate.m in Sources */,
 				776EB8ED23C6CAD60043CB5E /* Recipe.m in Sources */,
 				774641B523C465A500D5E61D /* main.m in Sources */,
-				7719E46823D68C9A005BA8D2 /* recipeDetailViewControllerTableViewController.m in Sources */,
 				77912BC923D53BD400A60632 /* Ingredients.m in Sources */,
 				774641C323C4870700D5E61D /* RecipeViewController.m in Sources */,
 				77912BC623D538A600A60632 /* AddRecipeViewController.m in Sources */,

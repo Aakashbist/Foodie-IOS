@@ -8,12 +8,13 @@
 
 #import "RecipeViewController.h"
 #import "DetailViewController.h"
+#import "AddRecipeViewController.h"
 
 
 @interface RecipeViewController ()
 
-    -(UIImage *) resize:(UIImage *)image toSize:(CGSize)size;
-  
+-(UIImage *) resize:(UIImage *)image toSize:(CGSize)size;
+
 
 @end
 
@@ -27,17 +28,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.ref = [[FIRDatabase database] reference];
+    self.ref = [[FIRDatabase database] reference];
     
-    // Uncomment the following line to preserve selection between presentations.
-   // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // Use the current view controller to update the search results.
+    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:self];
+    // Use the current view controller to update the search results.
+    searchController.searchResultsUpdater = self;
+    // Install the search bar as the table header.
+    self.navigationItem.titleView = searchController.searchBar;
+    // It is usually good to set the presentation context.
+    self.definesPresentationContext = YES;
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-      [self loadRecipes];
+    [self loadRecipes];
+    selectedRow = 999999;
 }
 
 -(void)loadRecipes{
@@ -50,7 +55,7 @@
         [recipe setRecipeUrl:[snapshot.value objectForKey:@"url"]];
         [recipe setIngredient:[snapshot.value objectForKey:@"ingredient"]];
         [self.recipes addObject:recipe];
-   
+        
         [self.tableView reloadData];
     }];
 }
@@ -75,15 +80,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RecipeCell" forIndexPath:indexPath];
-   Recipe *recipe=self.recipes[indexPath.row];
-   //NSLog(@"%@, %@",recipe.recipeTitle,recipe.recipeUrl);
+    Recipe *recipe=self.recipes[indexPath.row];
     cell.textLabel.text=recipe.recipeTitle;
     cell.imageView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:recipe.recipeUrl]]];
+    cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
+    cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 40,40);
+    
     return cell;
 }
-
-
-
 
 
 #pragma mark - Segues
@@ -94,50 +98,50 @@
         Recipe *choosenRecipe = [self.recipes objectAtIndex: indexPath.row];
         DetailViewController *detailViewController=segue.destinationViewController;
         detailViewController.currentRecipe=choosenRecipe;
-       }
+    }
+    else if ([[segue identifier] isEqualToString:@"showAddRecipes"]) {
+        if(selectedRow < 999999)
+        {
+            Recipe *choosenRecipe = [self.recipes objectAtIndex: selectedRow];
+            AddRecipeViewController *addRecipeViewController=segue.destinationViewController;
+            addRecipeViewController.currentRecipe=choosenRecipe;
+        }
+        else {
+            AddRecipeViewController *addRecipeViewController=segue.destinationViewController;
+            addRecipeViewController.currentRecipe=NULL;
+            
+        }
+    }
 }
 
-// Override to support conditional editing of the table view.
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 
-
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
+-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    selectedRow = indexPath.row;
+    
+    UITableViewRowAction *delete = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)  {
+        Recipe *recipe = [self.recipes objectAtIndex: indexPath.row];
+        NSLog(@"recipe: %@ %@", recipe.recipeId,recipe.ingredient);
+        [[[self.ref child:@"Foodie/Recipes" ] child:recipe.recipeId] removeValue];
+        [[[self.ref child:@"Foodie/Ingredient" ] child:recipe.ingredient] removeValue];
+        [self.recipes removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        
+    }];
+    delete.backgroundColor = [UIColor redColor];
+    UITableViewRowAction *edit = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Edit" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        [self performSegueWithIdentifier:@"showAddRecipes" sender:self];
+    }];
+    edit.backgroundColor = [UIColor blueColor];
+    return @[delete, edit];
 }
 
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
