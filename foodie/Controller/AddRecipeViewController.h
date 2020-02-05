@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (IBAction)chooseRecipeImage:(id)sender;
 
 @property (strong, nonatomic) NSString *ingredientTitle;
+@property (strong, nonatomic) NSString *imageUrl;
 @property (weak, nonatomic) Recipe *currentRecipe;
 @property (strong, nonatomic) FIRDatabaseReference *ref;
 @property (strong, nonatomic) FIRStorage *storage;

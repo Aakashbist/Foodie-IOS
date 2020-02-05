@@ -14,7 +14,7 @@
 @end
 
 @implementation DetailViewController
-@synthesize recipeId,recipeTitle,recipeImage,currentRecipe,addTofavouriteButton,ingredientId,addToShoppingList,ingredientTableView,listOfIngredients,ingredientTitle;
+@synthesize recipeId,recipeTitle,recipeImage,currentRecipe,addTofavouriteButton,ingredientId,addToShoppingList,ingredientTableView,listofRecipeIngredients,ingredientTitle;
 
 #pragma mark - Managing the detail item
 
@@ -26,12 +26,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     ingredientTableView.delegate = self;
     ingredientTableView.dataSource = self;
-    self.listOfIngredients=NSMutableArray.new;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -41,6 +35,7 @@
     ingredientId=currentRecipe.ingredient;
     recipeTitle.text=currentRecipe.recipeTitle;
     recipeImage.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:currentRecipe.recipeUrl]]];
+    self.listofRecipeIngredients=NSMutableArray.new;
     [self loadIngredients];
 }
 
@@ -50,8 +45,7 @@
         NSArray* value  =[[snapshot.children nextObject] value];
         for (int i=0; i<value.count; i++) {
             self.ingredientTitle= [[value objectAtIndex:i] objectForKey:@"title"];
-            NSLog(@"%@",self.ingredientTitle);
-            [self.listOfIngredients addObject:self.ingredientTitle];
+            [self.listofRecipeIngredients addObject:self.ingredientTitle];
         }
         [self->ingredientTableView reloadData];
         
@@ -83,14 +77,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ingredientCell" forIndexPath:indexPath];
-    
-    cell.textLabel.text=self.listOfIngredients[indexPath.row] ;
+    cell.textLabel.text=self.listofRecipeIngredients[indexPath.row] ;
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"%lu",(unsigned long)self.listOfIngredients.count);
-    return self.listOfIngredients.count;
+    return self.listofRecipeIngredients.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

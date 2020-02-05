@@ -13,8 +13,6 @@
 
 @interface RecipeViewController ()
 
--(UIImage *) resize:(UIImage *)image toSize:(CGSize)size;
-
 
 @end
 
@@ -29,16 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.ref = [[FIRDatabase database] reference];
-    
-    // Use the current view controller to update the search results.
-    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:self];
-    // Use the current view controller to update the search results.
-    searchController.searchResultsUpdater = self;
-    // Install the search bar as the table header.
-    self.navigationItem.titleView = searchController.searchBar;
-    // It is usually good to set the presentation context.
-    self.definesPresentationContext = YES;
 }
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self loadRecipes];
@@ -60,12 +50,6 @@
     }];
 }
 
--(UIImage *) resize:(UIImage *)image toSize:(CGSize)size{
-    UIGraphicsBeginImageContext(size);
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *resizesImage=UIGraphicsGetImageFromCurrentImageContext();
-    return resizesImage;
-}
 
 #pragma mark - Table view data source
 
@@ -124,7 +108,6 @@
     
     UITableViewRowAction *delete = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)  {
         Recipe *recipe = [self.recipes objectAtIndex: indexPath.row];
-        NSLog(@"recipe: %@ %@", recipe.recipeId,recipe.ingredient);
         [[[self.ref child:@"Foodie/Recipes" ] child:recipe.recipeId] removeValue];
         [[[self.ref child:@"Foodie/Ingredient" ] child:recipe.ingredient] removeValue];
         [self.recipes removeObjectAtIndex:indexPath.row];

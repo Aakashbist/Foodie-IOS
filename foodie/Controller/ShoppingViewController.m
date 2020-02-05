@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.ref = [[FIRDatabase database] reference];
-    self.listOfIngredients=NSMutableArray.new;
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -30,15 +30,16 @@
 }
 
 -(void)loadIngredients{
+    self.listOfIngredients=NSMutableArray.new;
     FIRDatabaseQuery *getIngredientsListQuery = [[self.ref child:@"Foodie/Shopping"] queryOrderedByKey];
     [getIngredientsListQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSString* key=[snapshot.value objectForKey:@"ingredients"];
         NSString* title=[snapshot.value objectForKey:@"recipeTitle"];
-        [self getListOfIngredientById:key : title];
+        [self getListOfIngredientById:key : title: snapshot.key];
     }];
 }
 
--(void)getListOfIngredientById:(NSString *) key : (NSString *) title {
+-(void)getListOfIngredientById:(NSString *) key : (NSString *) title : (NSString *) shoppingId{
     FIRDatabaseQuery *getIngredients = [[[self.ref child:@"Foodie/Ingredient/"] queryOrderedByKey] queryEqualToValue:key];
     [getIngredients observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSArray* value  =[[snapshot.children nextObject] value];
@@ -49,7 +50,8 @@
         }
         NSDictionary *post = @{
             @"title": title,
-            @"ingredient":data
+            @"ingredient":data,
+            @"key":shoppingId
         };
         [self.listOfIngredients addObject:post];
         [self.tableView reloadData];
@@ -58,13 +60,14 @@
 
 #pragma mark - Table view data source
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-  
+    
     CGRect frame = tableView.frame;
     
     UIButton *addButton = [[UIButton alloc] init];
     [addButton setTitle:@"×" forState:UIControlStateNormal];
+    [addButton setTag:section];
     [addButton setTitleColor:UIColor.systemRedColor forState:UIControlStateNormal];
-    [addButton addTarget:self action:@selector(removeIngredient) forControlEvents:UIControlEventTouchUpInside];
+    [addButton addTarget:self action:@selector(removeIngredient:) forControlEvents:UIControlEventTouchUpInside];
     addButton.frame=CGRectMake(frame.size.width-60, 5, 50, 20);
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 100, 20)];
     
@@ -72,19 +75,18 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     [headerView addSubview:title];
     [headerView addSubview:addButton];
-    
-    headerView.backgroundColor=[UIColor colorWithRed:236.0f/255.0f
-    green:236.0f/255.0f
-     blue:236.0f/255.0f
-    alpha:1.0f];
-    
+    headerView.backgroundColor=[UIColor colorWithRed:236.0f/255.0f green:236.0f/255.0f blue:236.0f/255.0f alpha:1.0f];
     return headerView;
 }
 
--(void)removeIngredient{
-    NSLog(@"%s@","clicked");
-    
+- (void)removeIngredient:(id)sender{
+    NSString* key= [[self.listOfIngredients objectAtIndex:[sender tag] ] objectForKey:@"key"] ;
+    [[[self.ref child:@"Foodie/Shopping" ] child:key] removeValue];
+    [self.listOfIngredients removeObjectAtIndex:[sender tag]];
+    [self.tableView reloadData];;
 }
+
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.listOfIngredients.count;
@@ -110,41 +112,5 @@
     return YES;
 }
 
-
-
-// Override to support editing the table view.
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        // Delete the row from the data source
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//    }
-//}
-
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

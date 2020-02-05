@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (strong, nonatomic) Recipe *currentRecipe;
-@property (strong, nonatomic) NSMutableArray *listOfIngredients;
+@property (strong, nonatomic) NSMutableArray *listofRecipeIngredients;
 @property (strong, nonatomic) NSString *ingredientTitle;
 
 

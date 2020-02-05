@@ -7,23 +7,23 @@
 
 @implementation AddRecipeViewController
 
-@synthesize recipeTitle, ingredient,recipeImageView,listOfIngredients,path,storage,uploadProgressView,addIngredientButton,saveRecipeButton,currentRecipe,recipeId,ingredientId,ingredientTableView,ingredientTitle;
+@synthesize recipeTitle, ingredient,recipeImageView,listOfIngredients,path,storage,uploadProgressView,addIngredientButton,saveRecipeButton,currentRecipe,recipeId,ingredientId,ingredientTableView,ingredientTitle,imageUrl;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.ref = [[FIRDatabase database] reference];
-    listOfIngredients = [[NSMutableArray alloc] init];
-    uploadProgressView.progress=0;
+    self.ref = [[FIRDatabase database] reference];    uploadProgressView.progress=0;
     uploadProgressView.hidden=true;
     ingredientTableView.delegate = self;
     ingredientTableView.dataSource = self;
+    
+    listOfIngredients = [[NSMutableArray alloc] init];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     if(currentRecipe != NULL){
         recipeId=currentRecipe.recipeId;
-        path=currentRecipe.recipeUrl;
+        imageUrl=currentRecipe.recipeUrl;
         ingredientId=currentRecipe.ingredient;
         recipeTitle.text=currentRecipe.recipeTitle;
         recipeImageView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:currentRecipe.recipeUrl]]];
@@ -58,10 +58,8 @@
         FIRStorageMetadata *metadata = [[FIRStorageMetadata alloc] init];
         metadata.contentType = @"image/jpeg";
         NSData *imageData = UIImageJPEGRepresentation(self.recipeImageView.image, 0.8);
-        // Upload file and metadata to the object 'images/mountains.jpg'
         FIRStorageUploadTask *uploadTask = [recipeImageRef putData:imageData metadata:metadata];
         [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot *snapshot) {
-            // Upload reported progress
             double percentComplete = 100.0 * (snapshot.progress.completedUnitCount) / (snapshot.progress.totalUnitCount);
             self.uploadProgressView.hidden=false;
             self.uploadProgressView.progress=(percentComplete/100);
@@ -94,6 +92,7 @@
 }
 - (IBAction)saveRecipe:(id)sender {
     if(recipeId){
+        [self addIngredientToFirebase:listOfIngredients];
         [self updateRecipe];
     }
     else{
@@ -105,13 +104,15 @@
 }
 
 -(void)updateRecipe{
- NSDictionary *post = @{
-       @"title": [recipeTitle text],
-       @"url": path,
-       @"ingredient":ingredientId
-   };
+    NSDictionary *post = @{
+        @"title": [recipeTitle text],
+        @"url": imageUrl,
+        @"ingredient":ingredientId
+    };
     NSDictionary *childUpdates = @{[@"/Foodie/Recipes/" stringByAppendingString:recipeId]: post};
-       [_ref updateChildValues:childUpdates];}
+    [_ref updateChildValues:childUpdates];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 -(void)addRecipeToFirebase:(NSString *) imageUrl{
     NSString *ingredientKey=[self addIngredientToFirebase:listOfIngredients];
@@ -128,19 +129,26 @@
 }
 
 -(NSString*)addIngredientToFirebase:(NSArray*) ingredientList{
-    
     NSMutableArray *data=NSMutableArray.new;
-    NSString *key = [[_ref child:@"Foodie/Ingredient"] childByAutoId].key;
     for (int i=0; i<[ingredientList count]; i++) {
         NSDictionary *post = @{
             @"title":[listOfIngredients objectAtIndex:i]
         };
         [ data addObject:post ];
     }
-    NSDictionary *childUpdates = @{[@"/Foodie/Ingredient/" stringByAppendingString:key]: data};
-    [_ref updateChildValues:childUpdates];
-    return key;
+    if(ingredientId){
+        [[[self.ref child:@"Foodie/Ingredient"] child:ingredientId] setValue:data];
+        return ingredientId;
+    }
+    
+    else{
+        NSString *key = [[_ref child:@"Foodie/Ingredient"] childByAutoId].key;
+        NSDictionary *childUpdates = @{[@"/Foodie/Ingredient/" stringByAppendingString:key]: data};
+        [_ref updateChildValues:childUpdates];
+        return key;
+    }
 }
+
 
 -(IBAction)addIngredients:(id)sender {
     [self.listOfIngredients addObject:[ingredient text]];
@@ -178,7 +186,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(self.listOfIngredients.count){
-    return @"Ingredient";
+        return @"Ingredient";
     }
     return @"";
 }
@@ -187,12 +195,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ingredientCell" forIndexPath:indexPath];
     
     [[cell textLabel] setText:[NSString stringWithFormat:@"%@",listOfIngredients[indexPath.row]]];
-
+    
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"%lu",(unsigned long)self.listOfIngredients.count);
     return self.listOfIngredients.count;
 }
 
