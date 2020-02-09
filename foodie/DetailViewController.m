@@ -53,23 +53,21 @@
 }
 
 - (IBAction)addToFavourites:(id)sender {
-    NSString *key = [[_ref child:@"Foodie/Favourites"] childByAutoId].key;
     NSDictionary *post = @{
         @"favourite": recipeId,
     };
-    NSDictionary *childUpdates = @{[@"/Foodie/Favourites/" stringByAppendingString:key]: post};
+    NSDictionary *childUpdates = @{[@"/Foodie/Favourites/" stringByAppendingString:recipeId]: post};
     [_ref updateChildValues:childUpdates];
     self.addTofavouriteButton.enabled=false;
     
 }
 
 - (IBAction)addToShoppingList:(id)sender {
-    NSString *key = [[_ref child:@"Foodie/Shopping"] childByAutoId].key;
     NSDictionary *post = @{
         @"ingredients": ingredientId,
         @"recipeTitle":currentRecipe.recipeTitle,
     };
-    NSDictionary *childUpdates = @{[@"/Foodie/Shopping/" stringByAppendingString:key]: post};
+    NSDictionary *childUpdates = @{[@"/Foodie/Shopping/" stringByAppendingString:ingredientId]: post};
     [_ref updateChildValues:childUpdates];
     self.addToShoppingList.enabled=false;
     

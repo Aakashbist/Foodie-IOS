@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     @private
     NSInteger selectedRow;
+    FIRDatabaseHandle handler;
 }
 
 @property (strong, nonatomic) FIRDatabaseReference *ref;

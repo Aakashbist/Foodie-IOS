@@ -33,6 +33,7 @@
     self.listOfIngredients=NSMutableArray.new;
     FIRDatabaseQuery *getIngredientsListQuery = [[self.ref child:@"Foodie/Shopping"] queryOrderedByKey];
     [getIngredientsListQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+         NSLog(@"shopping %@",snapshot.value);
         NSString* key=[snapshot.value objectForKey:@"ingredients"];
         NSString* title=[snapshot.value objectForKey:@"recipeTitle"];
         [self getListOfIngredientById:key : title: snapshot.key];

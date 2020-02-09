@@ -11,11 +11,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.ref = [[FIRDatabase database] reference];    uploadProgressView.progress=0;
+    self.ref = [[FIRDatabase database] reference];
+    uploadProgressView.progress=0;
     uploadProgressView.hidden=true;
     ingredientTableView.delegate = self;
     ingredientTableView.dataSource = self;
-    
     listOfIngredients = [[NSMutableArray alloc] init];
 }
 
@@ -142,12 +142,13 @@
     }
     
     else{
-        NSString *key = [[_ref child:@"Foodie/Ingredient"] childByAutoId].key;
+        NSString *key = [[_ref child:@"Foodie/Ingredient"] childByAutoId].key;//foodie/ingredient/fsf-sfw-sfs
         NSDictionary *childUpdates = @{[@"/Foodie/Ingredient/" stringByAppendingString:key]: data};
         [_ref updateChildValues:childUpdates];
         return key;
     }
 }
+
 
 
 -(IBAction)addIngredients:(id)sender {

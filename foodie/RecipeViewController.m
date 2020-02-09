@@ -13,7 +13,6 @@
 
 @interface RecipeViewController ()
 
-
 @end
 
 @implementation RecipeViewController
@@ -35,19 +34,33 @@
     selectedRow = 999999;
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+   [self.ref removeObserverWithHandle:handler];
+     
+}
+
 -(void)loadRecipes{
     FIRDatabaseQuery *getRecipesQuery = [[self.ref child:@"Foodie/Recipes"] queryOrderedByKey];
     self.recipes=NSMutableArray.new;
-    [getRecipesQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        Recipe *recipe=Recipe.new;
-        [recipe setRecipeId:snapshot.key];
-        [recipe setRecipeTitle:[snapshot.value objectForKey:@"title"]];
-        [recipe setRecipeUrl:[snapshot.value objectForKey:@"url"]];
-        [recipe setIngredient:[snapshot.value objectForKey:@"ingredient"]];
-        [self.recipes addObject:recipe];
+    handler=  [getRecipesQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        if([snapshot exists]){
+            Recipe *recipe=Recipe.new;
+                 [recipe setRecipeId:snapshot.key];
+                 [recipe setRecipeTitle:[snapshot.value objectForKey:@"title"]];
+                 [recipe setRecipeUrl:[snapshot.value objectForKey:@"url"]];
+                 [recipe setIngredient:[snapshot.value objectForKey:@"ingredient"]];
+                 @synchronized (self) {
+                     if(![self.recipes containsObject:recipe]){
+                         [self.recipes  addObject:recipe];
+                     }
+                 }
+                 [self.tableView reloadData];
+        }
+     
         
-        [self.tableView reloadData];
-    }];
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        [getRecipesQuery removeAllObservers];
+    }] ;
 }
 
 
@@ -77,23 +90,26 @@
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"showDetails"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        Recipe *choosenRecipe = [self.recipes objectAtIndex: indexPath.row];
-        DetailViewController *detailViewController=segue.destinationViewController;
-        detailViewController.currentRecipe=choosenRecipe;
-    }
-    else if ([[segue identifier] isEqualToString:@"showAddRecipes"]) {
-        if(selectedRow < 999999)
-        {
-            Recipe *choosenRecipe = [self.recipes objectAtIndex: selectedRow];
-            AddRecipeViewController *addRecipeViewController=segue.destinationViewController;
-            addRecipeViewController.currentRecipe=choosenRecipe;
-        }
-        else {
-            AddRecipeViewController *addRecipeViewController=segue.destinationViewController;
-            addRecipeViewController.currentRecipe=NULL;
+    if(sender){
+        if ([[segue identifier] isEqualToString:@"showDetails"]) {
+            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+            Recipe *choosenRecipe = [self.recipes objectAtIndex: indexPath.row];
+            DetailViewController *detailViewController=segue.destinationViewController;
+            detailViewController.currentRecipe=choosenRecipe;
             
+        }
+        else if ([[segue identifier] isEqualToString:@"showAddRecipes"]) {
+            if(selectedRow < 999999)
+            {
+                Recipe *choosenRecipe = [self.recipes objectAtIndex: selectedRow];
+                AddRecipeViewController *addRecipeViewController=segue.destinationViewController;
+                addRecipeViewController.currentRecipe=choosenRecipe;
+            }
+            else {
+                AddRecipeViewController *addRecipeViewController=segue.destinationViewController;
+                addRecipeViewController.currentRecipe=NULL;
+                
+            }
         }
     }
 }
@@ -108,8 +124,11 @@
     
     UITableViewRowAction *delete = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)  {
         Recipe *recipe = [self.recipes objectAtIndex: indexPath.row];
-        [[[self.ref child:@"Foodie/Recipes" ] child:recipe.recipeId] removeValue];
+        
         [[[self.ref child:@"Foodie/Ingredient" ] child:recipe.ingredient] removeValue];
+        [[[self.ref child:@"Foodie/Favourites" ] child:recipe.recipeId] removeValue] ;
+        [[[self.ref child:@"Foodie/Shopping" ] child:recipe.ingredient] removeValue];
+        [[[self.ref child:@"Foodie/Recipes" ] child:recipe.recipeId] removeValue];
         [self.recipes removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         

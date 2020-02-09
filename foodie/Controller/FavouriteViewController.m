@@ -19,43 +19,61 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.ref = [[FIRDatabase database] reference];
-    
-    
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self loadFavourites];
-    
+        self.recipes=NSMutableArray.new;
 }
 
 -(void)loadFavourites{
-    
-    self.recipes=NSMutableArray.new;
+    [self.recipes removeAllObjects];
     FIRDatabaseQuery *getFavouriteRecipesQuery = [[self.ref child:@"Foodie/Favourites"] queryOrderedByKey];
-    [getFavouriteRecipesQuery observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSEnumerator *children = [snapshot children];
-        FIRDataSnapshot *child;
-        while (child = [children nextObject]) {
-            NSString* key=child.value;
-            [self getListOfFavourite:key];
+    [getFavouriteRecipesQuery observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        @try {
+             NSEnumerator *children = [snapshot children];
+                  FIRDataSnapshot *child;
+                  if([children nextObject]){
+                      while (child =[children nextObject] ) {
+
+                          NSString* key=[child.value objectForKey:@"favourite"];
+                           NSLog(@" key value: %@", key);
+                              [self getListOfFavourite:key];
+
+                      }
+                  }
+        } @catch (NSException *exception) {
+          NSLog(@" catch exception%@", exception);
         }
+      
+
     }];
+   
     
 }
 
 -(void)getListOfFavourite:(NSString *) key
 {
-    FIRDatabaseQuery *getRecipesQuery = [[[self.ref child:@"Foodie/Recipes/"] queryOrderedByKey] queryEqualToValue:key];
-    [getRecipesQuery observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        Recipe *recipe=Recipe.new;
-        [recipe setRecipeTitle:[[snapshot.value objectForKey:key] objectForKey:@"title"]];
-        [recipe setRecipeUrl:[[snapshot.value objectForKey:key]   objectForKey:@"url"]];
-        [recipe setIngredient:[[snapshot.value objectForKey:key]   objectForKey:@"ingredient"]];
-        [self.recipes addObject:recipe];
-        [self.tableView reloadData];
-    }];
+    if(key== NULL)
+    {
+         NSLog(@"key null true ");
+    }
+    if(key!= NULL)
+    {
+    
+        FIRDatabaseQuery *getRecipesQuery = [[[self.ref child:@"Foodie/Recipes/"] queryOrderedByKey] queryEqualToValue:key];
+        [getRecipesQuery observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            Recipe *recipe=Recipe.new;
+            [recipe setRecipeTitle:[[snapshot.value objectForKey:key] objectForKey:@"title"]];
+            [recipe setRecipeUrl:[[snapshot.value objectForKey:key]   objectForKey:@"url"]];
+            [recipe setIngredient:[[snapshot.value objectForKey:key]   objectForKey:@"ingredient"]];
+            [self.recipes addObject:recipe];
+            [self.tableView reloadData];
+            
+        }];
+    }
+    
 }
 
 
